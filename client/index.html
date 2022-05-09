@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../lib/Semantic-UI-CSS-master/semantic.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    <title>Home</title>
+  </head>
+  <body>
+    <div id="gridContainer">
+      <template id="navbar-content">
+        <div class="ui menu" style="margin-bottom: 20px; padding: 20px">
+          <div class="left menu">
+            <h3 style="margin-right: 10px">{{money}} $</h3>
+          </div>
+          <div>
+            <h1>{{currentPage}}</h1>
+          </div>
+          <div class="right menu">
+            <h3><i class="user icon large"></i>{{login}}</h3>
+          </div>
+        </div>
+      </template>
+</div>
+    <div class="ui cards">
+        <div class="card" id="buy">
+            <div class="header"><i class="shopping cart icon"></i>Buy</div>
+        </div>
+      <div class="card" id="sell">
+        <div class="header"><i class="money bill alternate outline icon"></i></i>Sell</div>
+      </div>
+      <div class="card" id="play">
+        <div class="header"><i class="gamepad icon"></i>Play</div>
+      </div>
+    </div>
+  </body>
+  <script src="../lib/jquery-3.3.1.min.js"></script>
+  <script src="../lib/Semantic-UI-CSS-master/semantic.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="js/navbar.js"></script>
+
+</html>
