@@ -45,8 +45,6 @@ const cards = document.querySelectorAll(".card");
 
 cards.forEach((card) => {
   card.addEventListener("click", function () {
-    window.location.replace(
-      `http://127.0.0.1:5500/Atelier-II-frontend/pages/${card.id}.html`
-    );
+    window.location.replace(`http://127.0.0.1:5500/pages/${card.id}.html`);
   });
 });
