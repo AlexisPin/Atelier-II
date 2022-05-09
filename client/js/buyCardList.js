@@ -1,25 +1,4 @@
-let cardsList = [];
-let userAccount = 0;
-//let userCardsId = [];
 const userId = window.localStorage.getItem("id");
-
-const fetchUserInfos = () => {
-  const context = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  fetch(`https://asi2-backend-market.herokuapp.com/user/${userId}`, context)
-    .then((response) => response.json())
-    .then((data) => {
-      //userCardsId.push(...data.cardList),
-      userAccount = data.account;
-    })
-    .then(() => fetchCardsList())
-    .catch((error) => console.log(error));
-};
-fetchUserInfos();
 
 const fetchCardsList = () => {
   const context = {
@@ -30,13 +9,12 @@ const fetchCardsList = () => {
   };
   fetch(`https://asi2-backend-market.herokuapp.com/cards`, context)
     .then((response) => response.json())
-    .then((data) => cardsList.push(...data))
-    .then(() => {
-      displayCards(cardsList), addEvent();
+    .then((data) => {
+      displayCards(...data), addEvent();
     })
     .catch((error) => console.log(error));
 };
-
+fetchCardsList();
 const displayCards = (cardsList) => {
   let template = document.querySelector("#row");
 
@@ -63,9 +41,7 @@ const displayCards = (cardsList) => {
   });
 };
 
-const buyCard = (id, cardPrice) => {
-  //userAccount -= cardPrice;
-  //userCardsId = [...userCardsId, id];
+const buyCard = (id) => {
   const context = {
     method: "PUT",
     headers: {
@@ -76,7 +52,7 @@ const buyCard = (id, cardPrice) => {
     }),
   };
 
-  fetch(`https://asi2-backend-market.herokuapp.com/user/${userId}`, context)
+  fetch(`https://localhost:8081/user/{userId}?transaction=buy`, context)
     .then((response) => response.json())
     .then((data) => updateMoney(data))
     .catch((error) => console.log(error));
@@ -124,14 +100,7 @@ const addEvent = () => {
   sellBtn.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const id = parseInt(e.target.id, 10);
-      cardsList.forEach((card) => {
-        if (card.id === id) {
-          const cardPrice = card.price;
-          userAccount >= cardPrice
-            ? buyCard(id, cardPrice)
-            : alert("Not enough money");
-        }
-      });
+      buyCard(id);
     });
   });
 };
@@ -146,11 +115,11 @@ const displayCard = (card) => {
     .replace(/{{img_src}}/g, card.imgUrl)
     .replace(/{{name}}/g, card.name)
     .replace(/{{description}}/g, card.description)
-    .replace(/{{hp}}/g, round(card.hp))
-    .replace(/{{energy}}/g, round(card.energy))
-    .replace(/{{attack}}/g, round(card.attack))
-    .replace(/{{defence}}/g, round(card.defence))
-    .replace(/{{price}}/g, round(card.price))
+    .replace(/{{hp}}/g, card.hp)
+    .replace(/{{energy}}/g, card.energy)
+    .replace(/{{attack}}/g, card.attack)
+    .replace(/{{defence}}/g, card.defence)
+    .replace(/{{price}}/g, card.price)
     .replace(/{{id}}/g, card.id);
   clone.firstElementChild.innerHTML = newContent;
 
@@ -162,24 +131,13 @@ const displayCard = (card) => {
   const buySellButton = document.querySelector(".buySellButton");
   buySellButton.addEventListener("click", (e) => {
     const id = parseInt(e.target.id, 10);
-    cardsList.forEach((card) => {
-      if (card.id === id) {
-        const cardPrice = card.price;
-        userAccount >= cardPrice
-          ? buyCard(id, cardPrice)
-          : alert("Not enough money");
-      }
-    });
+    buyCard(id);
   });
 };
 
-const round = (x) => {
-  return Number.parseFloat(x).toFixed();
-};
-
-const updateMoney = (newAccount) => {
-  userAccount = newAccount;
-  let account = document.querySelector("#account");
-  account.innerHTML = newAccount.toString();
-  alert("Card bought remains " + userAccount + " $");
+const updateMoney = (data) => {
+  data.valid
+    ? ((account = document.querySelector("#account")),
+      (account.innerHTML = data.account.toString()))
+    : alert("Not enough money");
 };
