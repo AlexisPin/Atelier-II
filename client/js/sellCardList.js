@@ -121,7 +121,7 @@ const addEvent = () => {
 
         td.className === "imgUrl" &&
           ((cardInfo["imgUrl"] = td.firstElementChild.src),
-          (cardInfo["name"] = td.appendChild(td.lastElementChild).innerHTML));
+          (cardInfo["name"] = td.lastElementChild.innerHTML));
 
         td.className === "id" &&
           (cardInfo["id"] = parseInt(
@@ -164,6 +164,11 @@ const displayCard = (card) => {
   cardContainer.childElementCount > 1 &&
     cardContainer.removeChild(cardContainer.lastElementChild);
   cardContainer.appendChild(clone);
+
+  const buySellButton = document.querySelector(".buySellButton");
+  buySellButton?.addEventListener("click", (e) => {
+    sellCard(parseInt(e.target.id, 10));
+  });
 };
 
 const round = (x) => {

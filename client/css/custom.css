@@ -10,15 +10,12 @@ body {
   background-color: #fff;
 }
 
-.icon {
-  scale: 2;
+.cards .card {
+  height: 200px;
 }
-
-.card {
-  height: 100px;
-  width: 300px;
+.card .card-label {
+  font-size: 4rem;
 }
-
 .header {
   display: flex;
   justify-content: space-around;
@@ -29,7 +26,6 @@ body {
 
 .cards {
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .container {

@@ -15,13 +15,13 @@ const getData = (data) => {
 
   let currentPage = "";
   if (window.location.href.includes("buy")) {
-    currentPage = "Buy";
+    currentPage = "BUY";
   } else if (window.location.href.includes("sell")) {
-    currentPage = "Sell";
+    currentPage = "SELL";
   } else if (window.location.href.includes("play")) {
-    currentPage = "Play";
+    currentPage = "PLAY";
   } else if (window.location.href.includes("index")) {
-    currentPage = "Home";
+    currentPage = "HOME";
   }
   let template = document.querySelector("#navbar-content");
   let clone = document.importNode(template.content, true);

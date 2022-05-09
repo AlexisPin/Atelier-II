@@ -11,7 +11,7 @@
       href="../lib/Semantic-UI-CSS-master/semantic.min.css"
     />
     <link rel="stylesheet" type="text/css" href="css/custom.css" />
-    <title>Home</title>
+    <title>Jeu De Cartes</title>
   </head>
   <body>
     <div id="gridContainer">
@@ -28,16 +28,24 @@
           </div>
         </div>
       </template>
-</div>
+    </div>
     <div class="ui cards">
-        <div class="card" id="buy">
-            <div class="header"><i class="shopping cart icon"></i>Buy</div>
+      <div class="card" id="buy" style="margin: 1% 10% 5% 4%; width: 400px">
+        <div class="header">
+          <i class="shopping cart icon large"></i
+          ><span class="card-label">Buy</span>
         </div>
-      <div class="card" id="sell">
-        <div class="header"><i class="money bill alternate outline icon"></i></i>Sell</div>
       </div>
-      <div class="card" id="play">
-        <div class="header"><i class="gamepad icon"></i>Play</div>
+      <div class="card" id="sell" style="margin: 1% 10% 5% 4%; width: 400px">
+        <div class="header">
+          <i class="money bill alternate outline icon large"></i
+          ><span class="card-label">Sell</span>
+        </div>
+      </div>
+      <div class="card" id="play" style="margin: 1% 10% 5% 4%; width: 400px">
+        <div class="header">
+          <i class="gamepad icon large"></i><span class="card-label">Play</span>
+        </div>
       </div>
     </div>
   </body>
@@ -45,5 +53,4 @@
   <script src="../lib/Semantic-UI-CSS-master/semantic.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/navbar.js"></script>
-
 </html>

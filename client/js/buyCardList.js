@@ -158,6 +158,19 @@ const displayCard = (card) => {
   cardContainer.childElementCount > 1 &&
     cardContainer.removeChild(cardContainer.lastElementChild);
   cardContainer.appendChild(clone);
+
+  const buySellButton = document.querySelector(".buySellButton");
+  buySellButton.addEventListener("click", (e) => {
+    const id = parseInt(e.target.id, 10);
+    cardsList.forEach((card) => {
+      if (card.id === id) {
+        const cardPrice = card.price;
+        userAccount >= cardPrice
+          ? buyCard(id, cardPrice)
+          : alert("Not enough money");
+      }
+    });
+  });
 };
 
 const round = (x) => {
@@ -168,4 +181,5 @@ const updateMoney = (newAccount) => {
   userAccount = newAccount;
   let account = document.querySelector("#account");
   account.innerHTML = newAccount.toString();
+  alert("Card bought remains " + userAccount + " $");
 };
