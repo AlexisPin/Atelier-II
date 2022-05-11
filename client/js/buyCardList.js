@@ -23,7 +23,7 @@ const displayCards = (cardsList) => {
     newContent = clone.firstElementChild.innerHTML
       //.replace(/{{family_src}}/g, card.imgUrl)
       .replace(/{{family_name}}/g, card.family)
-      .replace(/{{img_src}}/g, card.smallImgUrl)
+      .replace(/{{img_src}}/g, card.imgUrl)
       .replace(/{{name}}/g, card.name)
       .replace(/{{description}}/g, card.description)
       .replace(/{{hp}}/g, card.hp)
@@ -107,7 +107,6 @@ const addEvent = () => {
 const displayCard = (card) => {
   let template = document.querySelector("#right-card");
   let clone = document.importNode(template.content, true);
-
   newContent = clone.firstElementChild.innerHTML
     //.replace(/{{family_src}}/g, card.imgUrl)
     .replace(/{{family_name}}/g, card.family)

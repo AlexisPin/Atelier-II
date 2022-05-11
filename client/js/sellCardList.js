@@ -57,7 +57,7 @@ const displayCards = (userCardsData) => {
     newContent = clone.firstElementChild.innerHTML
       //.replace(/{{family_src}}/g, card.imgUrl)
       .replace(/{{family_name}}/g, card.family)
-      .replace(/{{img_src}}/g, card.smallImgUrl)
+      .replace(/{{img_src}}/g, card.imgUrl)
       .replace(/{{name}}/g, card.name)
       .replace(/{{description}}/g, card.description)
       .replace(/{{hp}}/g, card.hp)
