@@ -63,12 +63,18 @@ public class UserService {
 				if(!userCardList.contains(currentCard.get())) {
 					int cardPrice = currentCard.get().getPrice();
 					if(userAccount >= cardPrice) {
-						currentUser.setAccount(currentUser.getAccount() - cardPrice);
-						List<Card> newCardList = new ArrayList<Card>();
-						newCardList.addAll(userCardList);
-						newCardList.add(currentCard.get());
-						currentUser.setCardList(newCardList);
-						currentCard.get().setUser(currentUser);
+						if(currentCard.get().getUser() == null)
+						{					
+							currentUser.setAccount(currentUser.getAccount() - cardPrice);
+							List<Card> newCardList = new ArrayList<Card>();
+							newCardList.addAll(userCardList);
+							newCardList.add(currentCard.get());
+							currentUser.setCardList(newCardList);
+							currentCard.get().setUser(currentUser);
+						} else {
+							return new ResponseEntity<>(new CustomErrorType("Un utilisateur possède déja cette carte"),
+									HttpStatus.CONFLICT);
+						}
 					}
 					else {
 						return new ResponseEntity<>(new CustomErrorType("Vous n'avez pas assez d'argent pour acheter cette carte"),
@@ -102,4 +108,11 @@ public class UserService {
 		
 		return new ResponseEntity<>(new CustomSuccesType(currentUser.getAccount()), HttpStatus.OK);
 	}
+
+	public Iterable<User> getUsers() {
+		Iterable<User> uOpt =uRepository.findAll();
+		return uOpt; 
+	}
+	
+
 }
