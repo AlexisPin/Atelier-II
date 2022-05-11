@@ -7,18 +7,17 @@ const fetchCardsList = () => {
       "Content-Type": "application/json",
     },
   };
-  fetch(`https://asi2-backend-market.herokuapp.com/cards`, context)
+  fetch(`http://localhost:8081/cards`, context)
     .then((response) => response.json())
     .then((data) => {
-      displayCards(...data), addEvent();
+      displayCards(data), addEvent();
     })
     .catch((error) => console.log(error));
 };
 fetchCardsList();
 const displayCards = (cardsList) => {
   let template = document.querySelector("#row");
-
-  cardsList.forEach((card) => {
+  cardsList?.forEach((card) => {
     let clone = document.importNode(template.content, true);
 
     newContent = clone.firstElementChild.innerHTML
@@ -52,9 +51,9 @@ const buyCard = (id) => {
     }),
   };
 
-  fetch(`https://localhost:8081/user/{userId}?transaction=buy`, context)
+  fetch(`http://localhost:8081/user/${userId}?transaction=buy`, context)
     .then((response) => response.json())
-    .then((data) => updateMoney(data))
+    .then((data) => updateMoney(data, id))
     .catch((error) => console.log(error));
 
   let rightCardContainer = document.querySelector("#card");
@@ -135,9 +134,19 @@ const displayCard = (card) => {
   });
 };
 
-const updateMoney = (data) => {
-  data.valid
-    ? ((account = document.querySelector("#account")),
-      (account.innerHTML = data.account.toString()))
-    : alert("Not enough money");
+const updateMoney = (data, id) => {
+  data.errorMessage
+    ? alert(data.errorMessage)
+    : ((account = document.querySelector("#account")),
+      (account.innerHTML = data.account.toString()),
+      alert("Vous venez d'acheter une carte !"));
+  if (data.account) {
+    let cardContainer = document.querySelector("#tableContent");
+    var children = Array.from(cardContainer.children).splice(1);
+    children.forEach((child) => {
+      if (child.lastElementChild.firstElementChild.firstElementChild.id == id) {
+        cardContainer.removeChild(child);
+      }
+    });
+  }
 };
