@@ -1,11 +1,6 @@
 package com.sp.model;
 
 
-
-
-
-
-
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -27,6 +22,8 @@ public class User {
 	private String lastName;
 	private String surName;
 	private String email;
+	
+	
 	@OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "user")
