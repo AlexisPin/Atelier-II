@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.sp.model.AuthUserDto;
 import com.sp.model.User;
 import com.sp.util.CustomErrorType;
-import com.sp.util.CustomSuccesType;
 
 @Service
 public class AuthService {
@@ -25,7 +24,7 @@ public class AuthService {
 
 	
 			if(u.getLogin().equals(user.getLogin()) && u.getPwd().equals(user.getPwd()) ) {
-				return new ResponseEntity<>(new CustomSuccesType(user).getUser(),
+				return new ResponseEntity<>(user,
 		                HttpStatus.OK);
 			}
 		 }

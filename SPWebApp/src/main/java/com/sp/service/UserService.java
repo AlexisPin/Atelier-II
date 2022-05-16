@@ -18,7 +18,6 @@ import com.sp.model.Card;
 import com.sp.model.UpdateUserDto;
 import com.sp.model.User;
 import com.sp.model.UserDto;
-import com.sp.repository.CardRepository;
 import com.sp.repository.UserRepository;
 import com.sp.util.CustomErrorType;
 import com.sp.util.CustomSuccesType;
@@ -129,13 +128,9 @@ public class UserService {
 		return new ResponseEntity<>(new CustomSuccesType(currentUser.getAccount()).getAccount(), HttpStatus.OK);
 	}
 
-	public List<UserDto> getUsers() {
+	public Iterable<User> getUsers() {
 		Iterable<User> uOpt =uRepository.findAll();
-		List<UserDto> uOptDto = new ArrayList<UserDto>();
-		for (User user : uOpt) {
-			uOptDto.add(new UserDto(user.getId(),user.getLogin(),user.getAccount(),user.getCardList()));
-		}
-		return uOptDto; 
+		return uOpt; 
 	}
 	
 

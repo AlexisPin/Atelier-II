@@ -1,5 +1,6 @@
 package com.sp.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sp.model.Card;
 import com.sp.model.UpdateUserDto;
 import com.sp.model.User;
 import com.sp.model.UserDto;
@@ -45,8 +45,12 @@ public class UserRestCrt {
     
     @RequestMapping(method=RequestMethod.GET,value="/users")
     public List<UserDto> getUsers() {
-        List<UserDto> users=uService.getUsers();
-        return users;
+        Iterable<User> users=uService.getUsers();
+        List<UserDto> uOptDto = new ArrayList<UserDto>();
+		for (User user : users) {
+			uOptDto.add(new UserDto(user.getId(),user.getLogin(),user.getAccount(),user.getCardList()));
+		}
+        return uOptDto;
 
     }
     
