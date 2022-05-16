@@ -1,5 +1,6 @@
 const user = {};
 const id = window.localStorage.getItem("id");
+console.log(id);
 window.addEventListener("load", function () {
   fetch(`http://127.0.0.1:8081/user/${id}`)
     .then((response) => response.json())
@@ -8,8 +9,7 @@ window.addEventListener("load", function () {
 
 const getData = (data) => {
   const user = {
-    surName: data.surName,
-    lastName: data.lastName,
+    login: data.login,
     account: data.account,
   };
 
@@ -29,7 +29,7 @@ const getData = (data) => {
   newContent = clone.firstElementChild.innerHTML
     .replace(/{{money}}/g, user.account)
     .replace(/{{currentPage}}/g, currentPage)
-    .replace(/{{login}}/g, user.surName);
+    .replace(/{{login}}/g, user.login);
   clone.firstElementChild.innerHTML = newContent;
 
   let cardContainer = document.querySelector("#gridContainer");
