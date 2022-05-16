@@ -1,6 +1,5 @@
 package com.sp.util;
 
-
 public class CustomSuccesType {
 
     private Integer account;

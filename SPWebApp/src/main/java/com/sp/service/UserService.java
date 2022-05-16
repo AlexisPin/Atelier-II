@@ -5,21 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sp.model.Card;
-import com.sp.model.UpdateUserDto;
 import com.sp.model.User;
 import com.sp.repository.UserRepository;
-import com.sp.util.CustomErrorType;
-import com.sp.util.CustomSuccesType;
+
 
 @Service
 public class UserService {
@@ -32,19 +26,17 @@ public class UserService {
 	public void addUser(User u) {
 		List<Card> cards = cService.getCards();
 		
+		List<Card> userCards = new ArrayList<>();
 		if(cards.size() > 4) {
 			Collections.shuffle(cards);
-			List<Card> userCards = new ArrayList<>();
 			for (int j = 0; j < 5; j++) {
 				Card card = cards.get(j);
 				userCards.add(card);
 				card.setUser(u);
-				
 			}
 			u.setCardList(userCards);
 		}
-		User createdUser=uRepository.save(u);
-		System.out.println(createdUser);
+		uRepository.save(u);
 	}
 	
 	public User getUser(int id) {
