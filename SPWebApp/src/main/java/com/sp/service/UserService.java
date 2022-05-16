@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sp.model.Card;
 import com.sp.model.UpdateUserDto;
 import com.sp.model.User;
-import com.sp.model.UserDto;
 import com.sp.repository.UserRepository;
 import com.sp.util.CustomErrorType;
 import com.sp.util.CustomSuccesType;
@@ -48,15 +47,12 @@ public class UserService {
 		System.out.println(createdUser);
 	}
 	
-	public ResponseEntity<?>  getUser(int id) {
+	public User getUser(int id) {
 		Optional<User> uOpt = uRepository.findById(id);
 		if (uOpt.isPresent()) {
-			UserDto uOptDto = new UserDto(uOpt.get().getId(),uOpt.get().getLogin(),uOpt.get().getAccount(),uOpt.get().getCardList());
-			return new ResponseEntity<>(uOptDto,
-                    HttpStatus.OK);
+			return uOpt.get();
 		}else {
-			return new ResponseEntity<>(new CustomErrorType("Unable to find user with id " + id + "."),
-                    HttpStatus.NOT_FOUND);
+			return null;
 		}
 	}
 
