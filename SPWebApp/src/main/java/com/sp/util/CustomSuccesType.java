@@ -16,7 +16,5 @@ public class CustomSuccesType {
     public Integer getAccount() {
         return account;
     }
-	public User getUser() {
-		return user;
-	}
+
 }

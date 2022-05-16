@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.aspectj.apache.bcel.util.SyntheticRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sp.model.Card;
 import com.sp.model.UpdateUserDto;
 import com.sp.model.User;
+import com.sp.model.UserDto;
 import com.sp.repository.CardRepository;
 import com.sp.repository.UserRepository;
 import com.sp.util.CustomErrorType;
@@ -28,10 +29,10 @@ public class UserService {
 	UserRepository uRepository;
 	
 	@Autowired
-	CardRepository cRepository;
+	CardService cService;
 	
 	public void addUser(User u) {
-		List<Card> cards = cRepository.findByUser(null);
+		List<Card> cards = cService.getCards();
 		
 		if(cards.size() > 4) {
 			Collections.shuffle(cards);
@@ -49,9 +50,10 @@ public class UserService {
 	}
 	
 	public ResponseEntity<?>  getUser(int id) {
-		Optional<User> uOpt =uRepository.findById(id);
+		Optional<User> uOpt = uRepository.findById(id);
 		if (uOpt.isPresent()) {
-			return new ResponseEntity<>(new CustomSuccesType(uOpt.get()).getUser(),
+			UserDto uOptDto = new UserDto(uOpt.get().getId(),uOpt.get().getLogin(),uOpt.get().getAccount(),uOpt.get().getCardList());
+			return new ResponseEntity<>(uOptDto,
                     HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(new CustomErrorType("Unable to find user with id " + id + "."),
@@ -68,27 +70,27 @@ public class UserService {
 		}
 		int userAccount = currentUser.getAccount();
 		int cardId = userRequest.getCard();
-		Optional<Card> currentCard = cRepository.findById(cardId);
+		Card currentCard = cService.getCard(cardId);
 		
-		if(currentCard.isEmpty()) {
+		if(currentCard.equals(null)) {
 			return new ResponseEntity<>(new CustomErrorType("Unable to upate. Card with id " + userRequest.getCard() + " not found."),
                     HttpStatus.NOT_FOUND);
 		}
 		
-		if(currentCard.isPresent()) {
+		else {
 			List<Card> userCardList = currentUser.getCardList();
 			if(transaction.equals("buy")) {
-				if(!userCardList.contains(currentCard.get())) {
-					int cardPrice = currentCard.get().getPrice();
+				if(!userCardList.contains(currentCard)) {
+					int cardPrice = currentCard.getPrice();
 					if(userAccount >= cardPrice) {
-						if(currentCard.get().getUser() == null)
+						if(currentCard.getUser() == null)
 						{					
 							currentUser.setAccount(currentUser.getAccount() - cardPrice);
 							List<Card> newCardList = new ArrayList<Card>();
 							newCardList.addAll(userCardList);
-							newCardList.add(currentCard.get());
+							newCardList.add(currentCard);
 							currentUser.setCardList(newCardList);
-							currentCard.get().setUser(currentUser);
+							currentCard.setUser(currentUser);
 						} else {
 							return new ResponseEntity<>(new CustomErrorType("Un utilisateur possède déja cette carte"),
 									HttpStatus.CONFLICT);
@@ -103,15 +105,15 @@ public class UserService {
 							HttpStatus.BAD_GATEWAY);
 					}
 			} else if (transaction.equals("sell")) {
-				if(userCardList.contains(currentCard.get())) {
-					int cardPrice = currentCard.get().getPrice();
+				if(userCardList.contains(currentCard)) {
+					int cardPrice = currentCard.getPrice();
 						currentUser.setAccount(currentUser.getAccount() + cardPrice);
 						List<Card> newCardList = new ArrayList<Card>();
 						newCardList.addAll(userCardList);
-						int sellCard = newCardList.indexOf(currentCard.get());
+						int sellCard = newCardList.indexOf(currentCard);
 						newCardList.remove(sellCard);
 						currentUser.setCardList(newCardList);
-						currentCard.get().setUser(null);
+						currentCard.setUser(null);
 				}else {
 					return new ResponseEntity<>(new CustomErrorType("Vous ne possédez pas cette carte"),
 							HttpStatus.BAD_GATEWAY);
@@ -122,14 +124,18 @@ public class UserService {
 			}
 		}
 		uRepository.save(currentUser);
-		cRepository.save(currentCard.get());
+		//cService.save(currentCard);
 		
 		return new ResponseEntity<>(new CustomSuccesType(currentUser.getAccount()).getAccount(), HttpStatus.OK);
 	}
 
-	public Iterable<User> getUsers() {
+	public List<UserDto> getUsers() {
 		Iterable<User> uOpt =uRepository.findAll();
-		return uOpt; 
+		List<UserDto> uOptDto = new ArrayList<UserDto>();
+		for (User user : uOpt) {
+			uOptDto.add(new UserDto(user.getId(),user.getLogin(),user.getAccount(),user.getCardList()));
+		}
+		return uOptDto; 
 	}
 	
 
