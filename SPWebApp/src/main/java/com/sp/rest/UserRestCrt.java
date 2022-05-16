@@ -54,12 +54,6 @@ public class UserRestCrt {
 			uOptDto.add(new UserDto(user.getId(),user.getLogin(),user.getAccount(),user.getCardList()));
 		}
         return uOptDto;
-
     }
     
-    @RequestMapping(method=RequestMethod.PUT,value="user/{userId}")
-    public ResponseEntity<?> putUser(@PathVariable Integer userId, @Valid @RequestBody UpdateUserDto userRequest, @RequestParam String transaction) {
-    	return uService.updateUser(userId,userRequest, transaction);
-    	
-    }
 }
